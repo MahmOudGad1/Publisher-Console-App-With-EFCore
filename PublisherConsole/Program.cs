@@ -33,7 +33,23 @@ RetrieveAndUpdateMultipleAuthors();
 CoordinatedRetrieveAndUpdateAuthor();
 
 
+void BulkUpdate()
+{
+    var newAuthors = new Author[]
+    {
+        new Author{Firstname ="Tsitsi ", Lastname = "Dangaremga"},
+        new Author{Firstname = "Lisa", Lastname ="see"},
+        new Author{Firstname = "zhang" , Lastname = "ling"},
+        new Author{Firstname = "marlynne", Lastname = "Robnoson"}
+    };
 
+    _context.Authors.AddRange(newAuthors);
+    var book = _context.Books.Find(2);
+    book.Title = "Programing entityframwork 2nd Edition ";
+
+    _context.SaveChanges();
+
+}
 
 void InsertMultipleAuthors()
 {
