@@ -33,6 +33,8 @@ RetrieveAndUpdateMultipleAuthors();
 CoordinatedRetrieveAndUpdateAuthor();
 
 
+
+
 void BulkUpdate()
 {
     var newAuthors = new Author[]
@@ -113,7 +115,8 @@ void VariousOperations()
 
 void RetrieveAndUpdateMultipleAuthors()
 {
-    var authors = _context.Authors.Where(a => a.Lastname=="salah").ToList();
+    var authors = _context.Authors.Where(a => a.Lastname.StartsWith("s")).ToList();
+    //var y = authors.Find(x => x.Lastname == "Salah");
     foreach(var Author in authors)
     {
         Author.Lastname = "gad";
