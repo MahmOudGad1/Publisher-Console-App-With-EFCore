@@ -13,26 +13,74 @@ PubContext _context = new PubContext();
 
 
 
-GetAuthors();
-AddAuthor();
-GetAuthors();
+//GetAuthors();
+//AddAuthor();
+//GetAuthors();
 
-AddAuthorsWithBooks();
-GetAuthorWithBooks();
+//AddAuthorsWithBooks();
+//GetAuthorWithBooks();
 
-QueringFilter();
-AddSomeMoreAuthors();
-SkipAndTakeAuthors();
+//QueringFilter();
+//AddSomeMoreAuthors();
+//SkipAndTakeAuthors();
 
-SortAuthors();
+//SortAuthors();
 
-RetrieveAndUpdateAuthor();
+//RetrieveAndUpdateAuthor();
 
-RetrieveAndUpdateMultipleAuthors();
+//RetrieveAndUpdateMultipleAuthors();
 
-CoordinatedRetrieveAndUpdateAuthor();
+//CoordinatedRetrieveAndUpdateAuthor();
+
+//InsertNewAuthorWithNewBook();
+
+//AddNewBookToExistingAuthorInMemory();
+
+EagerLoadingWithAuthors();
+
+void EagerLoadingWithAuthors()
+{
+    var authors = _context.Authors.Include(a => a.Books).ToList();
+    var dd = _context.Authors.Where(a => a.Lastname == "Lerman").Include(a => a.Books).ToList();
+    authors.ForEach(a =>
+    {
+        Console.WriteLine( $"{a.Firstname}({a.Books.Count})");
+        a.Books.ForEach(b => Console.WriteLine("      " + b.Title));
+    });
+
+}
+
+void AddNewBookToExistingAuthorInMemory()
+{
+
+    //var Book = new Book
+    //{
+    //    Title = "Test",
+    //    PublishDate = DateTime.Now,
+    //    authorId = 6
+    //}
+    //_context.Books.Add(Book);
 
 
+    var author = _context.Authors.FirstOrDefault(a => a.Lastname == "Oeki");
+    if (author != null)
+    {
+        author.Books.Add(new Book { Title = " Wool", PublishDate = new DateTime(2012, 1, 1), authorId = 6 });
+
+    }
+    _context.SaveChanges();
+}
+
+void InsertNewAuthorWithNewBook()
+{
+    var author = new Author { Firstname = "Lybda", Lastname = "Rutledge" };
+
+    author.Books.Add(new Book { Title = "West With Giraffes", PublishDate = new DateTime(2023, 10, 1) });
+
+    _context.Authors.Add(author);
+    _context.SaveChanges();
+
+}
 
 
 void BulkUpdate()
