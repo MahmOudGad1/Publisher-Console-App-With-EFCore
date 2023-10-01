@@ -36,7 +36,21 @@ PubContext _context = new PubContext();
 
 //AddNewBookToExistingAuthorInMemory();
 
-EagerLoadingWithAuthors();
+//EagerLoadingWithAuthors();
+
+Projections();
+
+void Projections()
+{
+    var unKnown = _context.Authors.
+        Select(a => new
+        {
+            AuthId = a.AuthorId,
+            Name = a.Firstname.First() + "" + a.Lastname,
+            Books = a.Books/*.Where(a => a.PublishDate.Year > 2000).Count()*/,
+        }).ToList();
+}
+
 
 void EagerLoadingWithAuthors()
 {
