@@ -38,7 +38,43 @@ PubContext _context = new PubContext();
 
 //EagerLoadingWithAuthors();
 
-Projections();
+//Projections();
+
+//LazyLoadedAuthors();
+
+ModifyingRlatedDataWhenTracked();
+
+void ModifyingRlatedDataWhenTracked()
+{
+    var author = _context.Authors.Include(a => a.Books).FirstOrDefault(a => a.AuthorId == 6);
+    author.Books[0].BasePrice = (decimal)12.00;
+    //_context.ChangeTracker.DetectChanges();
+
+
+    var _newContext = new PubContext();
+
+    //start tracking that book from within the graph and mark it as modified 
+    //the update method update all objects in a graph into modified
+    _newContext.Books.Update(author.Books[0]);
+
+    var state = _newContext.ChangeTracker.DebugView.ShortView;
+
+}
+
+void FilterUsingRelatedData()
+{
+    var RecentAuthors = _context.Authors.Where(a => a.Books.Any(a=> a.PublishDate.Year >= 2015)).ToList();
+}
+
+void LazyLoadedAuthors()
+{
+    var author = _context.Authors.FirstOrDefault(a => a.Lastname == "gad");
+
+    foreach(var book in author.Books)
+    {
+        Console.WriteLine(book.Title); 
+    }
+}
 
 void Projections()
 {
