@@ -8,6 +8,8 @@ namespace PublisherData
     {
         public DbSet<Author> Authors {  get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Artist> Artists { get; set; }
+        public DbSet<Cover> Covers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,6 +43,20 @@ namespace PublisherData
             //    HasMany<Book>(a => a.Books)
             //    .WithOne(b => b.Author).
             //    HasForeignKey(b => b.authorFK);
+            var someArtists = new Artist[]
+            {
+                new Artist { ArtistId = 1, FirstName ="mahmoud", LastName = "gad"},
+                new Artist {ArtistId = 2, FirstName = "dee", LastName ="Bell"},
+                new Artist {ArtistId = 3, FirstName = "kahrine", LastName = "kutharic"}
+            };
+            modelBuilder.Entity<Artist>().HasData(someArtists);
+            var someCovers = new Cover[]
+            {
+                new Cover { CoverId = 1, DesignIdeas = "How about a left hand in the dark?", DegetalOnly = false },
+                new Cover { CoverId = 2, DesignIdeas = "Should We Put A clock ", DegetalOnly = true },
+                new Cover { CoverId = 3, DesignIdeas = "Big eaarc in th rclouds ", DegetalOnly = false },
+            };
+
 
         }
 
