@@ -42,7 +42,98 @@ PubContext _context = new PubContext();
 
 //LazyLoadedAuthors();
 
-ModifyingRlatedDataWhenTracked();
+//ModifyingRlatedDataWhenTracked();
+
+//ConnectExistingArtistAndCoverObjects();
+
+//CreateNewCoverWithExistingArtist();
+
+//RetriveAllArtistHaveCovers();
+
+
+ConcatenatedRawSql_UnSafe();
+FormatedRawSql_Safe();
+
+void stringFromInteerpolated()
+{
+    var lastnameStart = "l";
+
+    var sql = $"Select * from Authors where Lastname LIKE  '{lastnameStart}\"%'";
+        var authors = _context.Authors
+        .FromSqlRaw(sql)
+        .OrderBy(a => a.Lastname).TagWith("interpolated_Unsafe").ToList();
+}
+}
+
+
+void ConcatenatedRawSql_UnSafe()
+{
+    var lastnameStart = "l";
+    var authors = _context.Authors
+        .FromSqlRaw("Select * from Authors where Lastname LIKE  '" + lastnameStart + "%'")
+        .OrderBy(a => a.Lastname).TagWith("Concatenated_Unsafe").ToList();
+}
+
+void FormatedRawSql_Safe()
+{
+    var lastnameStart = "L";
+    var authors = _context.Authors
+        .FromSqlRaw("Select * from authors where lastname LIKE  ' {0}%'", lastnameStart )
+        .OrderBy(a => a.Lastname).TagWith("Concatenated_safe").ToList();
+}
+
+
+void RetriveAllArtistHaveCovers()
+{ 
+    var artistWithCovers = _context.Artists.Include(a => a.Covers).Where(a => a.Covers.Any()).ToList();
+    
+    foreach(var artist in artistWithCovers)
+    {
+        Console.WriteLine($"{artist.FirstName} {artist.LastName}, Design to Work on");
+        if(artist.Covers.Count == 0)
+        {
+            Console.WriteLine("No Covers");
+        }
+        else
+        {
+            artist.Covers.ForEach(a => Console.WriteLine($" {a.DesignIdeas}"));
+        }
+    }
+}
+
+void CreateNewCoverWithExistingArtist()
+{
+    var artistA = _context.Artists.Find(1);
+
+    var NewCover = new Cover() { DesignIdeas = "i love  " };
+    
+    artistA.Covers.Add(NewCover);
+
+    _context.SaveChanges();
+
+}
+
+
+void ConnectExistingArtistAndCoverObjects()
+{
+    //var artistA = _context.Artists.Find(1);
+    //var artistB = _context.Artists.Find(2);
+
+    //var coverA = _context.Covers.Find(2);
+
+    var NewCover = new Cover() { DesignIdeas = "i love banana " };
+    var NewArtist = new Artist() {FirstName ="kir", LastName =" talmage"};
+    
+    NewArtist.Covers.Add(NewCover);
+    NewCover.Artists.Add(NewArtist);
+
+    //coverA.Artists.Add(artistA);
+    //coverA.Artists.Add(artistB);
+
+    _context.SaveChanges();
+
+}
+
 
 void ModifyingRlatedDataWhenTracked()
 {

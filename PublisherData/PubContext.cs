@@ -16,8 +16,7 @@ namespace PublisherData
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=PubDatatabase;Integrated Security=True;TrustServerCertificate=true;").
                 LogTo(Console.WriteLine, new[] {DbLoggerCategory.Database.Command.Name},
                 LogLevel.Information);
-            
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -57,7 +56,7 @@ namespace PublisherData
                 new Cover { CoverId = 3, DesignIdeas = "Big eaarc in th rclouds ", DegetalOnly = false },
             };
 
-
+            modelBuilder.Entity<Cover>().HasData(someCovers);
         }
 
     }

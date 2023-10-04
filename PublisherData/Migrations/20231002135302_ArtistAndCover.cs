@@ -66,6 +66,10 @@ namespace PublisherData.Migrations
                 name: "IX_ArtistCover_CoversCoverId",
                 table: "ArtistCover",
                 column: "CoversCoverId");
+            migrationBuilder.CreateIndex(
+               name: "IX_ArtistCover_ArtistsArtistId",
+               table: "ArtistCover",
+               column: "CoversCoverId");
         }
 
         /// <inheritdoc />
